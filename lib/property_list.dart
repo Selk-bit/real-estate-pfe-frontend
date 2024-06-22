@@ -74,7 +74,7 @@ abstract class PropertyListState<T extends StatefulWidget> extends State<T> {
       }
       while (scrollDown || (fetchedProperties < 10 && hasMore)) {
         setState(() => isLoading = true);
-        Map<String, dynamic> result = await getPropertyList(page: currentPage, query: searchQuery, minPrice: min, maxPrice: max, bedrooms: chambres, favorites: isFavoritesPage(), searchables: isSearchablesPage());
+        Map<String, dynamic> result = await getPropertyList(page: currentPage, query: searchQuery, minPrice: min, maxPrice: max, bedrooms: chambres, favorites: isFavoritesPage(), searchables: isSearchablesPage(), myproperties: isMypropertiesPage());
         List<Property> newProperties = result['properties'];
         int flooredNumber = (result['totalResults'] / paginationNumber).truncate() * paginationNumber;
         if (newProperties.isEmpty) {
@@ -101,6 +101,7 @@ abstract class PropertyListState<T extends StatefulWidget> extends State<T> {
 
   bool isFavoritesPage();
   bool isSearchablesPage();
+  bool isMypropertiesPage();
 
 
   void performSearch(String searchTerm) {
@@ -151,7 +152,7 @@ abstract class PropertyListState<T extends StatefulWidget> extends State<T> {
             },
             child: Center(
               child: Text(
-                "Se Déconnecter",
+                "Logout",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -171,8 +172,8 @@ abstract class PropertyListState<T extends StatefulWidget> extends State<T> {
       scrollDirection: Axis.horizontal,
       children: [
         SizedBox(width: 24),
-        buildButton("Se Connecter"),
-        buildButton("S'inscrire"),
+        buildButton("Login"),
+        buildButton("Register"),
         SizedBox(width: 8),
       ],
     );
@@ -184,16 +185,16 @@ abstract class PropertyListState<T extends StatefulWidget> extends State<T> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) {
-            if (filterName == "Se Connecter") {
+            if (filterName == "Login") {
               return Login();
-            } else if (filterName == "S'inscrire") {
+            } else if (filterName == "Register") {
               return Register();
             } else if (filterName == "Profile") {
               return Profile();
             } else if (filterName == "Favorites") {
               return Favorites();
             } else if (filterName == "Searchables") {
-              return Profile();
+              return Searchables();
             }
             return Container();
           }),

@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:real_estate/property_list.dart';
-import 'package:real_estate/search.dart';
-import 'package:real_estate/favorites.dart';
+import 'property_list.dart';
 import 'package:real_estate/profile.dart';
+import 'package:real_estate/searchables.dart';
+import 'package:real_estate/favorites.dart';
 import 'package:real_estate/addProperty.dart';
-import 'package:real_estate/myProperties.dart';
+import 'package:real_estate/search.dart';
 import 'package:real_estate/custom_drawer.dart';
 
 
-class Searchables extends StatefulWidget {
+class MyProperties extends StatefulWidget {
   @override
-  _SearchablesState createState() => _SearchablesState();
+  _MyPropertiesState createState() => _MyPropertiesState();
 }
 
-class _SearchablesState extends PropertyListState<Searchables> {
+class _MyPropertiesState extends PropertyListState<MyProperties> {
   @override
-  bool isSearchablesPage() {
-    return true;
-  }
   bool isFavoritesPage() {
     return false;
   }
-  bool isMypropertiesPage() {
+  bool isSearchablesPage() {
     return false;
+  }
+  bool isMypropertiesPage() {
+    return true;
   }
 
   @override

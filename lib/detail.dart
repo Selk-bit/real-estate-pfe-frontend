@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:real_estate/data.dart';
+import 'package:real_estate/editProperty.dart';
 import 'package:provider/provider.dart';
 import 'package:real_estate/providers/property_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,6 +17,7 @@ class Detail extends StatefulWidget {
 
 class _DetailState extends State<Detail> {
   bool isFavorite = false;
+  bool isMine = false;
 
   @override
   void initState() {
@@ -27,6 +29,7 @@ class _DetailState extends State<Detail> {
     try {
       setState(() {
         isFavorite = widget.property.favorite;
+        isMine = widget.property.mine;
       });
     } catch (e) {
       print('Error fetching favorite status: $e');
@@ -71,34 +74,70 @@ class _DetailState extends State<Detail> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(Icons.arrow_back_ios, color: Colors.white, size: 24),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(Icons.arrow_back_ios, color: Colors.white, size: 24),
+                        ),
                       ),
-                      GestureDetector(
-                        onTap: () async {
-                          setState(() {
-                            isFavorite = !isFavorite;
-                            widget.property.favorite = isFavorite;
-                          });
-                          if (isFavorite) {
-                            await Provider.of<PropertyProvider>(context, listen: false).favorite(widget.property.property_id);
-                          } else {
-                            await Provider.of<PropertyProvider>(context, listen: false).removeFavorite(widget.property.property_id);
-                          }
-                        },
-                        child: Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                            color: isFavorite ? Colors.yellow[700] : Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.favorite,
-                            color: isFavorite ? Colors.white : Colors.yellow[700],
-                            size: 28,
-                          ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () async {
+                                setState(() {
+                                  isFavorite = !isFavorite;
+                                  widget.property.favorite = isFavorite;
+                                });
+                                if (isFavorite) {
+                                  await Provider.of<PropertyProvider>(context, listen: false).favorite(widget.property.property_id);
+                                } else {
+                                  await Provider.of<PropertyProvider>(context, listen: false).removeFavorite(widget.property.property_id);
+                                }
+                              },
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  color: isFavorite ? Colors.yellow[700] : Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Icon(
+                                  Icons.favorite,
+                                  color: isFavorite ? Colors.white : Colors.yellow[700],
+                                  size: 28,
+                                ),
+                              ),
+                            ),
+                            if (widget.property.mine) ...[
+                              SizedBox(width: 10),
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditProperty(property: widget.property),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: Icon(
+                                    Icons.edit,
+                                    color: Colors.yellow[700],
+                                    size: 28,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     ],

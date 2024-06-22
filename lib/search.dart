@@ -3,6 +3,8 @@ import 'property_list.dart';
 import 'package:real_estate/profile.dart';
 import 'package:real_estate/searchables.dart';
 import 'package:real_estate/favorites.dart';
+import 'package:real_estate/addProperty.dart';
+import 'package:real_estate/myProperties.dart';
 
 class Search extends StatefulWidget {
   @override
@@ -17,6 +19,9 @@ class _SearchState extends PropertyListState<Search> {
   bool isSearchablesPage() {
     return false;
   }
+  bool isMypropertiesPage() {
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,79 +30,6 @@ class _SearchState extends PropertyListState<Search> {
       appBar: isLoggedIn
           ? AppBar(
               title: Text('Immobiler'),
-            )
-          : null,
-      drawer: isLoggedIn
-          ? Drawer(
-              child: Container(
-                color: Colors.white,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: Colors.yellow[700],
-                      ),
-                      child: Text(
-                        'Menu',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Home',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Search()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Favorites',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Favorites()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Searchables',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Searchables()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
             )
           : null,
       body: Column(
@@ -220,4 +152,26 @@ class _SearchState extends PropertyListState<Search> {
       ),
     );
   }
+
+  Widget _buildDrawerItem({required IconData icon, required String text, GestureTapCallback? onTap}) {
+  return ListTile(
+    leading: Icon(icon, color: Colors.black),
+    title: Text(
+      text,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+      ),
+    ),
+    onTap: onTap,
+  );
+}
+
+void _navigateTo(BuildContext context, Widget page) {
+  Navigator.pop(context);
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => page),
+  );
+}
 }

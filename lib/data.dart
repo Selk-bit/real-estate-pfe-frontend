@@ -36,8 +36,11 @@ class Property {
   String name;
   String price;
   String location;
+  String city;
+  String address;
   String sqm;
   String review;
+  String interest_percentage;
   String description;
   String frontImage;
   String ownerImage;
@@ -45,8 +48,14 @@ class Property {
   String ownerName;
   String phone;
   String number_of_rooms;
+  String number_of_salons;
+  String number_of_toilets;
+  String floor_number;
+  String age;
   List<Equipment> equipments;
   bool favorite;
+  bool mine;
+
 
   Property(
     this.property_id,
@@ -54,8 +63,11 @@ class Property {
     this.name,
     this.price,
     this.location,
+    this.city,
+    this.address,
     this.sqm,
     this.review,
+    this.interest_percentage,
     this.description,
     this.frontImage,
     this.ownerImage,
@@ -63,12 +75,17 @@ class Property {
     this.ownerName,
     this.phone,
     this.number_of_rooms,
+    this.number_of_salons,
+    this.number_of_toilets,
+    this.floor_number,
+    this.age,
     this.equipments,
-    this.favorite
+    this.favorite,
+    this.mine
   );
 }
 
-Future<Map<String, dynamic>> getPropertyList({int page = 1, String query = "", String? minPrice, String? maxPrice, String? bedrooms, bool? favorites, bool? searchables}) async {
+Future<Map<String, dynamic>> getPropertyList({int page = 1, String query = "", String? minPrice, String? maxPrice, String? bedrooms, bool? favorites, bool? searchables, bool? myproperties}) async {
   final prefs = await SharedPreferences.getInstance();
   var endpoint = '${dotenv.env['API_ENDPOINT']}/houses/';
   var queryParams = '?page=$page';
@@ -102,6 +119,16 @@ Future<Map<String, dynamic>> getPropertyList({int page = 1, String query = "", S
       }
       else{
         queryParams += '&searchables=0';
+      }
+  }
+
+  if(myproperties == true){
+      String? user_id = prefs.getString('userId');
+      if(user_id != "" && user_id != null){
+        queryParams += '&myproperties=$user_id';
+      }
+      else{
+        queryParams += '&myproperties=0';
       }
   }
 
@@ -140,7 +167,10 @@ Future<Map<String, dynamic>> getPropertyList({int page = 1, String query = "", S
           json["title"] ?? "",
           json["price"] ?? "",
           "${json['city']}, ${json['address']}",
+          json['city'] ?? "",
+          json['address'] ?? "",
           json["surface"] ?? "",
+          "7.5",
           json["interest_percentage"] ?? "",
           json["description"] ?? "",
           firstImage,
@@ -149,8 +179,13 @@ Future<Map<String, dynamic>> getPropertyList({int page = 1, String query = "", S
           json["owner_name"] ?? "",
           json["phone"] ?? "",
           json["number_of_rooms"].toString() ?? "",
+          json["number_of_salons"].toString() ?? "",
+          json["number_of_toilets"].toString() ?? "",
+          json["floor_number"].toString() ?? "",
+          json["age"].toString() ?? "",
           equipmentsList,
           json["favorite"],
+          json["mine"],
         ));
       }
     }

@@ -3,6 +3,9 @@ import 'package:real_estate/property_list.dart';
 import 'package:real_estate/search.dart';
 import 'package:real_estate/searchables.dart';
 import 'package:real_estate/profile.dart';
+import 'package:real_estate/addProperty.dart';
+import 'package:real_estate/myProperties.dart';
+import 'package:real_estate/custom_drawer.dart';
 
 
 class Favorites extends StatefulWidget {
@@ -18,6 +21,9 @@ class _FavoritesState extends PropertyListState<Favorites> {
   bool isSearchablesPage() {
     return false;
   }
+  bool isMypropertiesPage() {
+    return false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,79 +34,7 @@ class _FavoritesState extends PropertyListState<Favorites> {
               title: Text('Immobiler'),
             )
           : null,
-      drawer: isLoggedIn
-          ? Drawer(
-              child: Container(
-                color: Colors.white,
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  children: [
-                    DrawerHeader(
-                      decoration: BoxDecoration(
-                        color: Colors.yellow[700],
-                      ),
-                      child: Text(
-                        'Menu',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Home',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Search()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Favorites',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Favorites()),
-                        );
-                      },
-                    ),
-                    ListTile(
-                      title: Text(
-                        'Searchables',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 18,
-                        ),
-                      ),
-                      onTap: () {
-                        Navigator.pop(context);
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Searchables()),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            )
-          : null,
+      drawer: CustomDrawer(),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

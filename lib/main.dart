@@ -5,6 +5,8 @@ import 'package:real_estate/providers/auth_provider.dart';
 import 'package:real_estate/providers/property_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:real_estate/search.dart';
+import 'package:real_estate/custom_drawer.dart';
+
 
 void main() async {
   await dotenv.load(fileName: ".env");
@@ -33,7 +35,13 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Consumer2<AuthProvider, PropertyProvider>(
           builder: (context, auth, property, _) {
-            return Search();
+            return Scaffold(
+              appBar: AppBar(
+                title: Text('Real Estate App'),
+              ),
+              drawer: CustomDrawer(), // Use the custom drawer
+              body: Search(), // Your home page content
+            );
           },
         ),
       ),
